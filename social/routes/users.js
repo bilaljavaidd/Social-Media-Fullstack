@@ -1,5 +1,5 @@
 import express from 'express';
-import {updateUser, deleteUser, getUser, followUser, unFollowUser} from '../controllers/userControllers.js'
+import {updateUser, deleteUser, getUser, followUser, unFollowUser,getFriends} from '../controllers/userControllers.js'
 
 
 const userRouter = express.Router()
@@ -16,6 +16,11 @@ userRouter.delete("/:id", deleteUser)
 // get a user
 
 userRouter.get("/", getUser)
+
+// getFriends
+
+
+userRouter.get("/friends/:userid" , getFriends)
 
 // follow user
 
