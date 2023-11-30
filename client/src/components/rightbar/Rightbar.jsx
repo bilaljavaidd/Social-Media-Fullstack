@@ -14,15 +14,16 @@ import { Home } from "@mui/icons-material";
 export default function Rightbar({ user }) {
   const [friends, setFriends] = useState([]);
   const {user:currentUser, dispatch} = useContext(AuthContext)
-  const [followed, setFollowed] = useState(currentUser.following.includes(user?.id));
-  console.log(currentUser);
+  const [followed, setFollowed] = useState(); 
+
+
   
 
 
 
-useEffect(()=>{
-  setFollowed(currentUser.followings.includes(user?.id))
-},[currentUser,user?.id])
+// useEffect(()=>{
+//   setFollowed(currentUser.followings.includes(user?.id))
+// },[currentUser,user?.id])
 
 
 
@@ -32,12 +33,13 @@ useEffect(() => {
     try {
       const friendList = await axios.get(`/users/friends/${currentUser._id}`);
       setFriends(friendList.data);
+
     } catch (err) {
       console.log(err);
     }
   };
   getFriends();
-}, [user]);
+}, [currentUser._id]);
 
 const handleClick = async ()=>{
   try {
@@ -78,12 +80,18 @@ const handleClick = async ()=>{
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     return (
       <>
-      {user.username !== currentUser.username && (
+      {/* {user.username !== currentUser.username && (
         <button className="rightBarFollowButton" onClick={handleClick}>
           {followed ? "Unfollow" : "Follow"}
           {followed ? <Remove/> :  <Add/>}
         </button>
-      )}
+      )} */}
+      
+        <button className="rightBarFollowButton" onClick={handleClick} >
+        {followed ? "Unfollow" : "Follow"}
+          {followed ? <Remove/> :  <Add/>}
+        </button>
+     
         <h4 className="rightBarTitle">User Information</h4>
         <div className="rightBarInfo">
           <div className="rightBarInfoItem">
@@ -96,24 +104,31 @@ const handleClick = async ()=>{
           </div>
           <div className="rightBarInfoItem">
             <span className="rightBarInfoKey">Realationship:</span>
-            <span className="rightBarInfoValue">Single</span>
+            <span className="rightBarInfoValue"> <b>Single</b> </span>
             {/* <span className="rightBarInfoValue">{user.relationship === "1" ? "single" : user.relationship === "2" ? "married" : "-"}</span> */}
           </div>
         </div>
         <h4 className="rightBarTitle"> User friends</h4>
         <div className="rightBarFollowings">
-          {friends.map((friend) => {
-           <Link to={"/profile/"+friend.username} style={{textDecoration:"none"}}>
-           <div className="rightBarFollowing">
-              <img
-                src={friend.profilePicture ? PF+friend.profilePicture : PF+"person/noAvatar.jpg"}
-                alt=""
-                className="rightBarFollowingImg"
+        {friends.map((friend) => (
+            <Link key={friend}
+              to={"/profile/" + friend.username}
+              style={{ textDecoration: "none" }}
+            >
+              <div className="rightBarFollowing">
+                <img
+                  src={
+                    friend.profilePicture
+                      ? PF + friend.profilePicture
+                      : PF + "person/noAvatar.jpg"
+                  }
+                  alt=""
+                  className="rightBarFollowingImg"
                 />
-              <span className="rightBarFollowingName">{friend.username}</span>
-            </div>;
+                <span className="rightBarFollowingName">{friend.username}</span>
+              </div>
             </Link>
-          })}
+          ))}
         </div>
       </>
     );

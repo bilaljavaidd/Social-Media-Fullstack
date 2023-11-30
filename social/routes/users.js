@@ -20,7 +20,7 @@ userRouter.get("/", getUser)
 // getFriends
 
 
-userRouter.get("/friends/:userid" , getFriends)
+userRouter.get("/friends/:userId" , getFriends)
 
 // follow user
 

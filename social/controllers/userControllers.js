@@ -101,7 +101,7 @@ friends.map((friend)=>{
 res.status(200).json(friendList)
 
 } catch (err) {
-   res.status(500).json(err)
+   res.status(500).json(err) // hn h nkr
 }
 
 }
